@@ -1,6 +1,6 @@
 ---
 
-# Chatbot Application
+# CodeGPT
 
 ## Overview
 
@@ -86,6 +86,4 @@ Contributions are welcome! If you'd like to contribute to this project, please f
 
 ## License
 
-This project is licensed under the MIT WPU License.
-
----
+This project is not licensed. All rights are reserved by the author. Please contact the author for permissions regarding use, distribution, or modification.---
