@@ -7,6 +7,7 @@ import tensorflow as tf
 import pickle
 import json
 import random
+from difflib import SequenceMatcher  # Import for fuzzy matching
 
 # Initialize FastAPI
 app = FastAPI()
@@ -61,16 +62,21 @@ async def predict(message: Message):
         # Get the tag associated with the predicted index
         predicted_tag = intents[response_idx]['tag']
         
-        # Find the corresponding responses for the predicted tag
-        responses = None
-        for intent in intents:
-            if intent['tag'] == predicted_tag:
-                responses = intent['responses']
-                break
+        # Find the most relevant intent by checking the patterns
+        best_match_intent = None
+        highest_similarity = 0  # Track the highest similarity score
         
-        # Randomly select a response from the list of possible responses
-        if responses:
-            response = random.choice(responses)
+        for intent in intents:
+            for pattern in intent['patterns']:
+                # Calculate similarity between the input message and each pattern
+                similarity = SequenceMatcher(None, message.message.lower(), pattern.lower()).ratio()
+                if similarity > highest_similarity:
+                    highest_similarity = similarity
+                    best_match_intent = intent
+
+        # If an intent is found, choose a response, otherwise provide a fallback response
+        if best_match_intent:
+            response = random.choice(best_match_intent['responses'])
         else:
             response = "I'm sorry, I don't have a response for that."
 
