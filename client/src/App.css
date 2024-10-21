@@ -83,6 +83,7 @@
   flex-grow: 1;
   padding-bottom: 70px; /* Adds space to account for the input area */
   scroll-behavior: smooth; /* Enables smooth scrolling */
+  margin-bottom: 75px; 
 }
 
 .chat-message{
@@ -227,5 +228,21 @@
   .chat-input-holder {
     width: calc(100% - 30px); /* Adjust width for mobile */
   }
+}
+
+.copy-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s ease;
+}
+
+.copy-button:hover {
+  background-color: #2980b9;
 }
 

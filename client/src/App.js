@@ -44,16 +44,30 @@ function App() {
     }
   };
 
-  // Function to scroll to the bottom of the chat log
   useEffect(() => {
     if (chatLogRef.current) {
       chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
     }
-  }, [messages]); // Trigger whenever messages array changes
+  }, [messages]); 
 
-  // Function to start a new chat by clearing the messages
   const handleNewChat = () => {
     setMessages([]);
+  };
+
+  // Function to copy text between backticks to clipboard
+  const handleCopyToClipboard = (text) => {
+    const regex = /```(.*?)```/gs; // Matches text between triple backticks (multiline supported)
+    const match = regex.exec(text);
+
+    if (match && match[1]) {
+      navigator.clipboard.writeText(match[1].trim()).then(() => {
+        alert('Code copied to clipboard!');
+      }).catch((err) => {
+        console.error('Failed to copy text: ', err);
+      });
+    } else {
+      alert('No code found between backticks to copy.');
+    }
   };
 
   return (
@@ -69,7 +83,18 @@ function App() {
               className={`chat-message ${msg.sender === 'user' ? '' : 'chat-message-server'}`}
             >
               <div className="avatar"></div>
-              <div className="message">{msg.text}</div>
+              <div className="message">
+                {msg.text}
+                {/* Show copy button only for AI responses */}
+                {msg.sender === 'ai' && (
+                  <button 
+                    className="copy-button" 
+                    onClick={() => handleCopyToClipboard(msg.text)}
+                  >
+                    Copy
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

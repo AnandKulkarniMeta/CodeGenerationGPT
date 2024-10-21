@@ -7,14 +7,13 @@ import tensorflow as tf
 import pickle
 import json
 import random
-from difflib import SequenceMatcher  # Import for fuzzy matching
+from difflib import SequenceMatcher  
 
-# Initialize FastAPI
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Frontend URL
+    allow_origins=["http://localhost:3000"],  
     allow_credentials=True,
     allow_methods=["*"], 
     allow_headers=["*"], 
@@ -25,15 +24,12 @@ model = load_model('F:/ChatBotUI/basic_model.h5')
 with open('F:/ChatBotUI/tokenizer.pkl', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
-# Load responses from the JSON file
 with open('F:/ChatBotUI/intents.json', 'r') as f: 
     intents = json.load(f)['intents']
 
-# Define request body schema
 class Message(BaseModel):
     message: str
 
-# Preprocessing function with reshaping logic
 def preprocess_message(message):
     sequences = tokenizer.texts_to_sequences([message])
     padded_sequences = tf.keras.preprocessing.sequence.pad_sequences(sequences, maxlen=50)  # Adjust maxlen
